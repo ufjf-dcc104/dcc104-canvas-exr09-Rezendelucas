@@ -4,8 +4,10 @@ function Sprite(){
   this.vx = 0;
   this.vy = 0;
   this.ax = 0;
-  this.ay = 0;
+  this.ay = 100;
   this.g = 10;
+  this.gx;
+  this.gy;
   this.isGround = false;
   this.isfalling = true;
   this.isJump = false;
@@ -92,6 +94,10 @@ Sprite.prototype.mover = function (map, dt) {
       this.isGround = true;
       this.isfalling = false;
       this.y += (this.gy)*map.SIZE - (this.y-this.SIZE/2);
+      }else if(map.cells[this.gy][this.gx] == 5){
+      this.isGround = true;
+      this.isfalling = false;
+      this.y += (this.gy)*map.SIZE - (this.y-this.SIZE/2);
       }else{
         this.vy = this.vy + (this.ay + this.g)*dt;
         this.y = this.y + this.vy*dt;
@@ -117,32 +123,11 @@ Sprite.prototype.mover = function (map, dt) {
      }
   }
 
-
-  
-/*
-  // movimenta eixo y
-  if(map.cells[this.gy - 1][this.gx] == 1  && this.isGround){
-    this.y -= (this.gy) * map.SIZE - (this.y - this.SIZE/2) ;//+ this.offset ;
-  }else{
-    if(this.vy > 0 && map.cells[this.gy][this.gx] == 1 ){this.isGround = true;}
-    this.vy = this.vy + (this.ay + this.g)*dt;
-    this.y = this.y + this.vy*dt;
+  if(map.cells[this.gy - 1][this.gx] == 3){
+    map.cells[this.gy - 1][this.gx] = 2;
+    //map.deletaCoin(this.gy-1,this.gx);
+    map.coins--;
   }
-/*
-  if(this.y == yAnterior){
-    this.pular = true;
-  } else {
-    this.pular = false;
-  }
-  if(this.ay < 200) {
-  this.ay+=this.g*2*dt;
-  }
-*/
-
-  //if(map.cells[this.gy][this.gx] == 3){
-    //map.cells[this.gy][this.gx] = 2;
-    //map.tesouros--;
-  //}
   this.atualizaFrameAnimacoa(dt);
 };
 

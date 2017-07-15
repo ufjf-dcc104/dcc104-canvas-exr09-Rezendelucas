@@ -1,7 +1,9 @@
 function Map(rows, collumns) {
   this.SIZE = 32;
   this.victory = false;
-  this.coin = 0;
+  this.coin;
+  this.coins = 0;
+  this.vetCoins = [];
   this.cells = [];
   for (var r = 0; r < rows; r++) {
     this.cells[r] = [];
@@ -24,7 +26,7 @@ Map.prototype.desenhar = function (ctx, img) {
         ctx.strokeStyle = "black";
         ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
       }else if(this.cells[r][c] == 3){
-        ctx.fillStyle = "green";
+        ctx.fillStyle = "yellow";
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
         ctx.strokeStyle = "black";
         ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
@@ -45,12 +47,21 @@ Map.prototype.desenhar = function (ctx, img) {
     }
   }
 
-  for (var i = 0; i < this.tesouros.length; i++) {
-      this.tesouros[i].desenharQuadrado(ctx);
+  for (var i = 0; i < this.Coins; i++) {
+      this.coin[i].desenharQuadrado(ctx);
       //this.tesouros[i].desenharObjeto(ctx, img.images[this.tesouros[i].imgKey]);
   }
-
 };
+
+ Map.prototype.deletaCoin = function(gx, gy){
+    for (var i = 0; i < this.vetCoins.length; i++) {
+      this.coin[i].localizacao(map);
+      if(this.coin[i].gx == gx && this.coin[i].gy == gy){
+         this.coin.splice(i, 1); 
+      }
+    }
+ }; 
+
 
 Map.prototype.showInformations = function(ctx){
   
@@ -59,7 +70,7 @@ Map.prototype.showInformations = function(ctx){
     ctx.fillText("Vitória", 285, 225);
   }
 
-}
+};
 
 Map.prototype.setCells = function (newCells) {
   for (var i = 0; i < newCells.length; i++) {
@@ -73,7 +84,11 @@ Map.prototype.setCells = function (newCells) {
           break;
         case 3:
           this.cells[i][j] = 3;
-          this.tesouros++;
+          coin = new Sprite();
+          coin.x = (j+0.5)*map.SIZE;
+          coin.y = (i+0.5)*map.SIZE;
+          this.vetCoins.push(coin);
+          this.coins++;
           break;
         case 4:
           this.cells[i][j] = 2;
