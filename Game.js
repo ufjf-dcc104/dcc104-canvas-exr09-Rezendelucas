@@ -104,9 +104,9 @@ function initControls(){
   addEventListener('keydown', function(e){
     switch (e.keyCode) {
       case 32:
-        if(pc.isGround) { 
+       if(pc.isGround) { 
           pc.isJump = true;
-          pc.vy = -125;
+          pc.vy = -100;
         }
         e.preventDefault();
         break;
@@ -132,7 +132,6 @@ function initControls(){
   addEventListener('keyup', function(e){
     switch (e.keyCode) {
       case 32:
-        pc.vy = 0;
         break;
       case 37:
         pc.ax = 0;
