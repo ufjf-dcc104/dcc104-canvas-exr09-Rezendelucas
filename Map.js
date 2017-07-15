@@ -1,7 +1,7 @@
 function Map(rows, collumns) {
   this.SIZE = 32;
   this.victory = false;
-  this.tesouros = 0;
+  this.coin = 0;
   this.cells = [];
   for (var r = 0; r < rows; r++) {
     this.cells[r] = [];
@@ -15,30 +15,33 @@ Map.prototype.desenhar = function (ctx, img) {
 
   for (var r = 0; r < this.cells.length; r++) {
     for (var c = 0; c < this.cells[0].length; c++) {
-      if(this.cells[r][c]==0){
-        ctx.fillStyle = "tan";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
-        ctx.strokeStyle = "tan";
-        ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
-      }
-      if(this.cells[r][c]==1){
+      if(this.cells[r][c] == 1){
         ctx.fillStyle = "brown";
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+      }else if(this.cells[r][c] == 2){
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+      }else if(this.cells[r][c] == 3){
+        ctx.fillStyle = "green";
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
         ctx.strokeStyle = "black";
         ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
-      }
-      if(this.cells[r][c]==2){
-        ctx.fillStyle = "tan";
+      }else if(this.cells[r][c] == 4){
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
+      }else if(this.cells[r][c] == 5){
+        ctx.fillStyle = "blue";
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
         ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
-        //ctx.strokeStyle = "tan";
-        //ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
-      }
-      if(this.cells[r][c]==3){
-        ctx.fillStyle = "green";
-        ctx.fillRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
-        //ctx.strokeStyle = "tan";
-        //ctx.strokeRect(c*this.SIZE, r*this.SIZE, this.SIZE, this.SIZE);
-      }
+      }else{};
+      // 1 == plataforma
+      // 2 == area livre
+      // 3 == coin
+      // 4 == player spawn
+      // 5 == parede
     }
   }
 
@@ -58,15 +61,6 @@ Map.prototype.showInformations = function(ctx){
 
 }
 
-Map.prototype.getCells = function () {
-  for (var r = 0; r < this.cells.length; r++) {
-    for (var c = 0; c < this.cells[0].length; c++) {
-      console.log(r);
-      console.log(c);
-    }
-  }
-};
-
 Map.prototype.setCells = function (newCells) {
   for (var i = 0; i < newCells.length; i++) {
     for (var j = 0; j < newCells[i].length; j++) {
@@ -81,20 +75,18 @@ Map.prototype.setCells = function (newCells) {
           this.cells[i][j] = 3;
           this.tesouros++;
           break;
+        case 4:
+          this.cells[i][j] = 2;
+          pc.y = (i+0.5)*map.SIZE;
+          pc.x = (j+0.5)*map.SIZE;
+          pc.g = 75;
+          break;
+        case 5:
+          this.cells[i][j] = 5;
+          break; 
         default:
-          this.cells[i][j] = 0;
+          this.cells[i][j] = 2;
       }
     }
   }
 };
-
-/*Map.prototype.mover = function (dt) {
-  for (var i = 0; i < this.enemies.length; i++) {
-    this.enemies[i].mover(this,dt);
-  }
-};
-Map.prototype.perseguir = function (alvo) {
-  for (var i = 0; i < this.enemies.length; i++) {
-    this.enemies[i].perseguir(alvo);
-  }
-};*/
